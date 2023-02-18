@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { WizardsController } from './wizards/wizards.controller';
-// import { WizardsService } from './wizards/wizards.service';
+import { WizardsService } from './wizards/wizards.service';
 import { WizardsModule } from './wizards/wizards.module';
 
 @Module({
