@@ -10,12 +10,16 @@ import {
   NotFoundException,
   ConflictException,
 } from '@nestjs/common';
-import { CreateWizardDTO, FilterDTO } from './wizards.dto';
+import { SpellService } from 'src/spell/spell.service';
+import { AssignDTO, CreateWizardDTO, FilterDTO } from './wizards.dto';
 import { WizardsService } from './wizards.service';
 
 @Controller('wizards')
 export class WizardsController {
-  constructor(private wizardsService: WizardsService) {}
+  constructor(
+    private wizardsService: WizardsService,
+    private spellService: SpellService,
+  ) {}
 
   @Post('/')
   async addWizard(@Body() CreateWizard: CreateWizardDTO) {
@@ -53,6 +57,21 @@ export class WizardsController {
     @Body() createWizzard: CreateWizardDTO,
   ) {
     const updated = await this.wizardsService.updateWizard(id, createWizzard);
+    if (!updated) throw new NotFoundException('update not founcd');
+    return updated;
+  }
+
+  @Put('/assign_spell/:id')
+  async assignSpellToWizzard(
+    @Param('id') id: string,
+    @Body() AssignDTO: AssignDTO,
+  ) {
+    const foundSpell = await this.spellService.getSpellById(AssignDTO.spell);
+    if (!foundSpell) throw new ConflictException('Spell not found');
+    const updated = await this.wizardsService.asignSpellToWizzard(
+      id,
+      AssignDTO,
+    );
     if (!updated) throw new NotFoundException('update not founcd');
     return updated;
   }

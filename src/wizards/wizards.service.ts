@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateWizardDTO, FilterDTO } from './wizards.dto';
+import { AssignDTO, CreateWizardDTO, FilterDTO } from './wizards.dto';
 import { Wizard, WizardDocument } from './wizard.schema';
 
 @Injectable()
@@ -17,16 +17,15 @@ export class WizardsService {
   }
 
   async getFilteredWizzards(filter: FilterDTO): Promise<Wizard[] | Wizard> {
-    const { firstname, lastname } = filter;
-    console.log(filter);
+    const { search } = filter;
     const filteredWizzard = await this.WizardModel.find({
       $or: [
         {
-          firstname: { $regex: 'klen' },
+          firstname: { $regex: search, $options: 'i' },
         },
-        { lastname: { $regex: 'manuel' } },
+        { lastname: { $regex: search, $options: 'i' } },
       ],
-    });
+    }).populate('spell');
     return filteredWizzard;
   }
 
@@ -36,11 +35,13 @@ export class WizardsService {
   }
 
   async getAllWizards(): Promise<Wizard[]> {
-    return await this.WizardModel.find().exec();
+    return await this.WizardModel.find().populate('spell').exec();
   }
 
   async getWizardById(id: string): Promise<Wizard> {
-    return await this.WizardModel.findById(id).exec();
+    return await (await this.WizardModel.findById(id))
+      .populated('spell')
+      .exec();
   }
 
   async updateWizard(id: string, wizardDTO: CreateWizardDTO): Promise<Wizard> {
@@ -49,5 +50,14 @@ export class WizardsService {
 
   async deleteWizard(id: string): Promise<Wizard> {
     return await this.WizardModel.findByIdAndDelete(id).exec();
+  }
+
+  async asignSpellToWizzard(id: string, AssignDTO: AssignDTO): Promise<Wizard> {
+    const { spell } = AssignDTO;
+    return await this.WizardModel.findByIdAndUpdate(
+      { _id: id },
+      { spell: spell },
+      { new: true },
+    );
   }
 }

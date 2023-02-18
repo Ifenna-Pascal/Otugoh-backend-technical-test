@@ -3,7 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { WizardsModule } from './wizards/wizards.module';
-import { SpellController } from './spell/spell.controller';
 import { SpellModule } from './spell/spell.module';
 
 @Module({
@@ -14,7 +13,7 @@ import { SpellModule } from './spell/spell.module';
     WizardsModule,
     SpellModule,
   ],
-  controllers: [AppController, SpellController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

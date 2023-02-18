@@ -10,16 +10,16 @@ import {
   NotFoundException,
   ConflictException,
 } from '@nestjs/common';
-import { CreateSpellDTO } from './spell.dto';
+import { CreateSpellDTO, FilterSpell } from './spell.dto';
 import { SpellService } from './spell.service';
 
-@Controller('Spell')
-export class SpellsController {
+@Controller('spell')
+export class SpellController {
   constructor(private SpellsService: SpellService) {}
 
   @Post('/')
   async addSpell(@Body() CreateSpell: CreateSpellDTO) {
-    const SpellExists = await this.SpellsService.getSpellByNickname(
+    const SpellExists = await this.SpellsService.getSpellByName(
       CreateSpell.name,
     );
     if (SpellExists) throw new ConflictException('spell already exists');
@@ -28,11 +28,11 @@ export class SpellsController {
   }
 
   @Get('/')
-  async getAllSpells(@Query() filter: CreateSpellDTO) {
-    // if (Object.keys(filter).length) {
-    //   const filteredSpell = await this.SpellsService.getFilteredSpells(filter);
-    //   return filteredSpell;
-    // }
+  async getAllSpells(@Query() filter: FilterSpell) {
+    if (Object.keys(filter).length) {
+      const filteredSpell = await this.SpellsService.getFilteredSpells(filter);
+      return filteredSpell;
+    }
     const Spells = await this.SpellsService.getAllSpells();
     if (!Spells) throw new NotFoundException('Spells not found');
     return Spells;

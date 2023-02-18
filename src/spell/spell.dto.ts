@@ -6,3 +6,10 @@ export class CreateSpellDTO {
   @IsNotEmpty()
   public name: string;
 }
+
+export class FilterSpell {
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  public name: string;
+}

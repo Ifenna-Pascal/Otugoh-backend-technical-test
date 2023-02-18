@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateSpellDTO } from './spell.dto';
+import { CreateSpellDTO, FilterSpell } from './spell.dto';
 import { Spell, SpellDocument } from './spell.schema';
 
 @Injectable()
@@ -16,16 +16,16 @@ export class SpellService {
     return newSpell;
   }
 
-  //   async getFilteredWizzards(filter: CreateSpellDTO): Promise<Spell> {
-  //     const { name } = filter;
-  //     const filteredSpell = await this.SpellModel.find({
-  //       name: { $regex: name, $options: 'i' },
-  //     });
-  //     return filteredSpell;
-  //   }
+  async getFilteredSpells(filter: FilterSpell): Promise<Spell | Spell[]> {
+    const { name } = filter;
+    const filteredSpell = await this.SpellModel.find({
+      name: { $regex: name, $options: 'i' },
+    });
+    return filteredSpell;
+  }
 
-  async getSpellByNickname(nickname: string): Promise<Spell> {
-    const Spell = await this.SpellModel.findOne({ nickname: nickname });
+  async getSpellByName(name: string): Promise<Spell> {
+    const Spell = await this.SpellModel.findOne({ name: name });
     return Spell;
   }
 

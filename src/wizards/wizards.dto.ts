@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsNumber, IsString, IsOptional } from 'class-validator';
+import { IsObjectId } from 'class-validator-mongo-object-id';
 
 export class CreateWizardDTO {
   // Validates name field
@@ -30,10 +31,12 @@ export class FilterDTO {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  public firstname: string;
+  public search: string;
+}
 
-  @IsOptional()
+export class AssignDTO {
+  @IsObjectId({ message: 'Invalid mongoose ID' })
   @IsString()
   @IsNotEmpty()
-  public lastname: string;
+  public spell: string;
 }
