@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { WizardsModule } from './wizards/wizards.module';
 import { SpellModule } from './spell/spell.module';
+import { ElixirsModule } from './elixirs/elixirs.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { SpellModule } from './spell/spell.module';
     ),
     WizardsModule,
     SpellModule,
+    ElixirsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
