@@ -3,10 +3,13 @@ import { Document } from 'mongoose';
 
 export type WizardDocument = Wizard & Document;
 
-Schema();
+@Schema()
 export class Wizard {
   @Prop()
-  name: string;
+  firstname: string;
+
+  @Prop()
+  lastname: string;
 
   @Prop()
   location: string;
