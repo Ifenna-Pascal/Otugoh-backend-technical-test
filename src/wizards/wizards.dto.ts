@@ -60,6 +60,7 @@ export class FilterDTO {
     default: '1',
   })
   @IsString()
+  @IsOptional()
   @IsNotEmpty()
   public pageNumber: string;
 
@@ -69,6 +70,7 @@ export class FilterDTO {
     required: true,
     default: '1',
   })
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   public limit: string;

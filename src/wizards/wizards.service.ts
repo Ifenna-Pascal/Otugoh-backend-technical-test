@@ -42,7 +42,7 @@ export class WizardsService {
 
   async getAllWizards(filter: FilterDTO): Promise<Wizard[]> {
     const { pageNumber, limit } = filter;
-    const limits = parseInt(limit) || 3;
+    const limits = parseInt(limit) || 5;
     const pageNumbers = parseInt(pageNumber) || 1;
     return await this.WizardModel.find()
       .populate('spell')

@@ -19,9 +19,14 @@ export class ElixirsService {
   async getFilteredElixirss(
     filter: FilterElixirs,
   ): Promise<Elixirs | Elixirs[]> {
-    const { name } = filter;
+    const { search } = filter;
     const filteredElixirs = await this.ElixirsModel.find({
-      name: { $regex: name, $options: 'i' },
+      $or: [
+        {
+          name: { $regex: search, $options: 'i' },
+        },
+        { difficulty: { $regex: search, $options: 'i' } },
+      ],
     });
     return filteredElixirs;
   }
