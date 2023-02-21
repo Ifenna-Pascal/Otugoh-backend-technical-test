@@ -1,7 +1,8 @@
 ## How To Run
 
 **Development mode**
-npm run start:dev <br/>
+
+> npm run start:dev <br/>
 
 **Production mode**
 
