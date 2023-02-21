@@ -27,6 +27,6 @@ async function bootstrap() {
     .build();
   const wizzardDescriptorDocument = SwaggerModule.createDocument(app, document);
   SwaggerModule.setup('api', app, wizzardDescriptorDocument);
-  await app.listen(4000);
+  await app.listen(process.env.PORT ? parseInt(process.env.PORT) : 4000);
 }
 bootstrap();
