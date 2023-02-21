@@ -16,8 +16,10 @@ export class WizardsService {
     return newWizard;
   }
 
-  async getFilteredWizzards(filter: FilterDTO): Promise<Wizard[] | Wizard> {
-    const { search } = filter;
+  async getFilteredWizzards(filter: FilterDTO) {
+    const { search, pageNumber, limit } = filter;
+    const limits = parseInt(limit) || 5;
+    const pageNumbers = parseInt(pageNumber) || 1;
     const filteredWizzard = await this.WizardModel.find({
       $or: [
         {
@@ -25,7 +27,11 @@ export class WizardsService {
         },
         { lastname: { $regex: search, $options: 'i' } },
       ],
-    }).populate('spell');
+    })
+      .populate('spell')
+      .limit(limits)
+      .skip((pageNumbers - 1) * limits)
+      .exec();
     return filteredWizzard;
   }
 
@@ -34,8 +40,15 @@ export class WizardsService {
     return wizard;
   }
 
-  async getAllWizards(): Promise<Wizard[]> {
-    return await this.WizardModel.find().populate('spell').exec();
+  async getAllWizards(filter: FilterDTO): Promise<Wizard[]> {
+    const { pageNumber, limit } = filter;
+    const limits = parseInt(limit) || 3;
+    const pageNumbers = parseInt(pageNumber) || 1;
+    return await this.WizardModel.find()
+      .populate('spell')
+      .limit(limits)
+      .skip((pageNumbers - 1) * limits)
+      .exec();
   }
 
   async getWizardById(id: string): Promise<Wizard> {

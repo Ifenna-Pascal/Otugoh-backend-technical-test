@@ -8,7 +8,9 @@ import { ElixirsModule } from './elixirs/elixirs.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.MONGODB_URL),
+    MongooseModule.forRoot(
+      'mongodb+srv://Ifenna:Pascal@cluster0.cwq1o5m.mongodb.net/?retryWrites=true&w=majority',
+    ),
     WizardsModule,
     SpellModule,
     ElixirsModule,

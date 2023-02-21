@@ -33,13 +33,14 @@ export class WizardsController {
 
   @Get('/')
   async getAllWizards(@Query() filter: FilterDTO) {
-    if (Object.keys(filter).length) {
+    console.log(filter);
+    if (filter.search?.length > 0) {
       const filteredWizzard = await this.wizardsService.getFilteredWizzards(
         filter,
       );
       return filteredWizzard;
     }
-    const wizzards = await this.wizardsService.getAllWizards();
+    const wizzards = await this.wizardsService.getAllWizards(filter);
     if (!wizzards) throw new NotFoundException('wizzards not found');
     return wizzards;
   }
